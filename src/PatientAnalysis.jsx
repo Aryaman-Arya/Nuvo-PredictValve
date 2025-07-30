@@ -612,7 +612,7 @@ function PatientDataEntry() {
   return (
     <div className="flex-1 bg-black p-6">
       <div className="mb-6">
-                 <h2 className="text-2xl font-bold text-white mb-4">Upload additional patient Data</h2>
+                 <h2 className="text-2xl font-bold text-white mb-4">Upload additional Data</h2>
         <button className="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition-colors flex items-center gap-2">
           <FileText className="h-4 w-4" />
           Upload
