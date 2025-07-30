@@ -105,7 +105,7 @@ function PatientDataEntry() {
   };
 
   const sections = [
-    { id: 'profile', title: 'Patient Profile (Baseline Visit)', icon: User },
+    { id: 'profile', title: 'Patient Profile (Baseline Visit)', icon: User   },
     { id: 'procedure', title: 'Index Procedure', icon: Activity },
     { id: 'ecg', title: 'ECG Evaluation (Core Laboratory)', icon: Monitor },
     { id: 'ct3', title: 'CT3 Imaging (Mensio Analysis)', icon: Camera },
@@ -650,7 +650,7 @@ function PatientDataEntry() {
                 onClick={() => setActiveSection(section.id)}
                                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                    activeSection === section.id
-                     ? 'bg-white text-purple-800 shadow-sm'
+                     ? 'bg-white text-purple-900 shadow-sm'
                      : 'text-white hover:text-gray-300'
                  }`}
               >
