@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Sphere, Box, Cylinder, Torus, useGLTF } from '@react-three/drei';
@@ -17,16 +18,23 @@ import {
   Menu,
   X
 } from 'lucide-react';
+import PredictValve from './PredictValve';
+import PatientAnalysis from './PatientAnalysis';
 
 // GLB Heart Model Component
 function GLBHeart() {
-  return <GLBLoader />;
-}
-
-// Separate GLB Loader Component
-function GLBLoader() {
+  console.log('GLBHeart: Attempting to load GLB model...');
+  
+  // Test mode - uncomment the next line to test with a simple cube
+  // return <Box args={[1, 1, 1]}><meshStandardMaterial color="#ef4444" /></Box>;
+  
   try {
+    console.log('GLBHeart: Calling useGLTF...');
     const gltf = useGLTF('/models/heart-model.glb');
+    console.log('GLBHeart: GLB loaded successfully:', gltf);
+    console.log('GLBHeart: Scene object:', gltf.scene);
+    console.log('GLBHeart: Scene children:', gltf.scene.children);
+    
     return (
       <primitive 
         object={gltf.scene} 
@@ -36,13 +44,19 @@ function GLBLoader() {
       />
     );
   } catch (error) {
-    console.log('GLB failed to load, using fallback:', error);
+    console.error('GLBHeart: GLB failed to load, using fallback:', error);
+    console.error('GLBHeart: Error details:', {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    });
     return <SimpleHeart />;
   }
 }
 
 // Simple Heart Model Component (Working Version)
 function SimpleHeart() {
+  console.log('SimpleHeart: Rendering fallback heart model');
   return (
     <group>
       <Sphere args={[1, 32, 32]} position={[0, 0, 0]}>
@@ -59,6 +73,14 @@ function SimpleHeart() {
       </Box>
       <Box args={[0.5, 0.1, 0.3]} position={[-0.3, 0, 0]}>
         <meshStandardMaterial color="#ef4444" />
+      </Box>
+      {/* Add a visible indicator that this is the fallback model */}
+      <Box args={[0.1, 0.1, 0.1]} position={[0, 1.5, 0]}>
+        <meshStandardMaterial color="#10b981" emissive="#10b981" emissiveIntensity={0.8} />
+      </Box>
+      {/* Add text indicator */}
+      <Box args={[0.8, 0.1, 0.05]} position={[0, 1.8, 0]}>
+        <meshStandardMaterial color="#f59e0b" emissive="#f59e0b" emissiveIntensity={0.5} />
       </Box>
     </group>
   );
@@ -103,12 +125,13 @@ function Navigation({ isOpen, setIsOpen }) {
             <a href="#solution" className="text-gray-300 hover:text-purple-400 transition-all duration-300 hover:scale-105">Solution</a>
             <a href="#how-it-works" className="text-gray-300 hover:text-purple-400 transition-all duration-300 hover:scale-105">How It Works</a>
             <a href="#impact" className="text-gray-300 hover:text-purple-400 transition-all duration-300 hover:scale-105">Impact</a>
-            <button 
-              className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-              onClick={() => window.location.href = '/#contact'}
-            >
-              Request Demo
-            </button>
+            <Link to="/predict-valve">
+              <button 
+                className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                Request Demo
+              </button>
+            </Link>
           </div>
 
           <button
@@ -128,9 +151,11 @@ function Navigation({ isOpen, setIsOpen }) {
             <a href="#solution" className="block px-3 py-2 text-gray-300 hover:text-purple-400 transition-colors">Solution</a>
             <a href="#how-it-works" className="block px-3 py-2 text-gray-300 hover:text-purple-400 transition-colors">How It Works</a>
             <a href="#impact" className="block px-3 py-2 text-gray-300 hover:text-purple-400 transition-colors">Impact</a>
-            <button className="w-full mt-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-300">
-              Request Demo
-            </button>
+            <Link to="/predict-valve">
+              <button className="w-full mt-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all duration-300">
+                Request Demo
+              </button>
+            </Link>
           </div>
         </div>
       )}
@@ -160,7 +185,7 @@ function HeroSection() {
           <pointLight position={[10, 10, 10]} intensity={1} />
           <pointLight position={[-10, -10, -10]} intensity={0.5} />
           <directionalLight position={[0, 10, 5]} intensity={0.5} />
-          <SimpleHeart />
+          <GLBHeart />
           <DataParticles />
           <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.3} />
         </Canvas>
@@ -206,10 +231,12 @@ function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <button className="group bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-4 rounded-2xl text-lg font-semibold hover:from-purple-600 hover:to-blue-600 transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105">
-            Request Demo
-            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-          </button>
+          <Link to="/predict-valve">
+            <button className="group bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-4 rounded-2xl text-lg font-semibold hover:from-purple-600 hover:to-blue-600 transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105">
+              Request Demo
+              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </Link>
           <button className="group border-2 border-white/20 text-white px-8 py-4 rounded-2xl text-lg font-semibold hover:border-purple-400 hover:text-purple-400 transition-all duration-300 backdrop-blur-sm bg-white/5 hover:bg-white/10">
             Explore How It Works
           </button>
@@ -705,13 +732,15 @@ function CTASection() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <motion.button 
-              className="group bg-white text-blue-600 px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-gray-100 transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105"
-              whileHover={{ y: -2 }}
-            >
-              <Mail className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-              Schedule a Demo
-            </motion.button>
+            <Link to="/predict-valve">
+              <motion.button 
+                className="group bg-white text-blue-600 px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-gray-100 transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:scale-105"
+                whileHover={{ y: -2 }}
+              >
+                <Mail className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                Schedule a Demo
+              </motion.button>
+            </Link>
             <motion.button 
               className="group border-2 border-white/30 text-white px-8 py-4 rounded-2xl text-lg font-semibold hover:border-white/50 transition-all duration-300 flex items-center justify-center backdrop-blur-sm bg-white/10 hover:bg-white/20 transform hover:scale-105"
               whileHover={{ y: -2 }}
@@ -778,17 +807,25 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      <Navigation isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
-      <HeroSection />
-      <ProblemSection />
-      <SolutionSection />
-      <HowItWorksSection />
-      <ImpactSection />
-      <TestimonialsSection />
-      <CTASection />
-      <Footer />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={
+          <div className="min-h-screen bg-gray-900">
+            <Navigation isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
+            <HeroSection />
+            <ProblemSection />
+            <SolutionSection />
+            <HowItWorksSection />
+            <ImpactSection />
+            <TestimonialsSection />
+            <CTASection />
+            <Footer />
+          </div>
+        } />
+        <Route path="/predict-valve" element={<PredictValve />} />
+        <Route path="/patient-analysis" element={<PatientAnalysis />} />
+      </Routes>
+    </Router>
   );
 }
 
