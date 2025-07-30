@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Heart, 
+import {
+  Heart,
   User,
   FileText,
   Activity,
@@ -16,7 +16,11 @@ import {
   MoreVertical,
   Eye,
   Edit,
-  Save
+  Save,
+  TrendingUp,
+  BarChart3,
+  Target,
+  Clock
 } from 'lucide-react';
 
 // Navigation Component
@@ -29,8 +33,8 @@ function Navigation() {
             <Heart className="h-8 w-8 text-red-500 mr-2 animate-pulse" />
             <span className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">PredictValve</span>
           </div>
-          
-          <a 
+
+          <a
             href="/"
             className="text-gray-300 hover:text-purple-400 transition-all duration-300 hover:scale-105 flex items-center gap-2"
           >
@@ -58,7 +62,7 @@ function PatientDataEntry() {
     randomized: 'No',
     randomizationDate: '',
     reasonNotRandomized: 'Patient preference',
-    
+
     // Index Procedure
     deviceUsed: 'TAVI Valve',
     hospital: 'Clinique Pasteur',
@@ -69,7 +73,7 @@ function PatientDataEntry() {
     plannedSurgery30Days: 'No',
     plannedSurgeryDate: '',
     plannedSurgeryDetails: '',
-    
+
     // ECG Evaluation
     ecgDate: '2024-11-14',
     ecgTime: '09:30',
@@ -79,7 +83,7 @@ function PatientDataEntry() {
     heartRate: '72 bpm',
     normalSinusRhythm: 'Yes',
     atrialFibrillation: 'No',
-    
+
     // CT3 Imaging
     phase: 'Mid Systolic',
     typeOfAorticValve: 'Tricuspid',
@@ -90,7 +94,7 @@ function PatientDataEntry() {
     aorticAnnulusAreaDerivedDiameter: '24.5 mm',
     aorticAnnulusPerimeterDerivedDiameter: '24.9 mm',
     aorticAnnulusArea: '473.3 mm²',
-    
+
     // Post-Procedure Events
     eventType: 'None',
     eventDate: '',
@@ -105,7 +109,7 @@ function PatientDataEntry() {
   };
 
   const sections = [
-    { id: 'profile', title: 'Patient Profile (Baseline Visit)', icon: User   },
+    { id: 'profile', title: 'Patient Profile (Baseline Visit)', icon: User },
     { id: 'procedure', title: 'Index Procedure', icon: Activity },
     { id: 'ecg', title: 'ECG Evaluation (Core Laboratory)', icon: Monitor },
     { id: 'ct3', title: 'CT3 Imaging', icon: Camera },
@@ -113,20 +117,20 @@ function PatientDataEntry() {
   ];
 
   const renderSection = () => {
-    switch(activeSection) {
+    switch (activeSection) {
       case 'profile':
         return (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-white mb-1">Study Subject ID</label>
-                                 <input
-                   type="text"
-                   name="studySubjectId"
-                   value={formData.studySubjectId}
-                   onChange={handleChange}
-                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-gray-900"
-                 />
+                <input
+                  type="text"
+                  name="studySubjectId"
+                  value={formData.studySubjectId}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white text-gray-900"
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-white mb-1">Location</label>
@@ -240,7 +244,7 @@ function PatientDataEntry() {
             </div>
           </div>
         );
-      
+
       case 'procedure':
         return (
           <div className="space-y-4">
@@ -350,7 +354,7 @@ function PatientDataEntry() {
             </div>
           </div>
         );
-      
+
       case 'ecg':
         return (
           <div className="space-y-4">
@@ -452,7 +456,7 @@ function PatientDataEntry() {
             </div>
           </div>
         );
-      
+
       case 'ct3':
         return (
           <div className="space-y-4">
@@ -558,7 +562,7 @@ function PatientDataEntry() {
             </div>
           </div>
         );
-      
+
       case 'events':
         return (
           <div className="space-y-4">
@@ -603,7 +607,7 @@ function PatientDataEntry() {
             </div>
           </div>
         );
-      
+
       default:
         return null;
     }
@@ -612,7 +616,7 @@ function PatientDataEntry() {
   return (
     <div className="flex-1 bg-black p-6">
       <div className="mb-6">
-                 <h2 className="text-2xl font-bold text-white mb-4">Upload additional Data</h2>
+        <h2 className="text-2xl font-bold text-white mb-4">Upload additional Data</h2>
         <button className="bg-purple-600 text-white px-6 py-2 rounded-md hover:bg-purple-700 transition-colors flex items-center gap-2">
           <FileText className="h-4 w-4" />
           Upload
@@ -622,12 +626,12 @@ function PatientDataEntry() {
       <div className="mb-6">
         <div className="bg-gray-800 p-4 rounded-md">
           <label className="block text-sm font-medium text-white mb-1">Patient ID</label>
-                     <input
-             type="text"
-             value="30-07-2025-11-48-09-301"
-             readOnly
-             className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
-           />
+          <input
+            type="text"
+            value="30-07-2025-11-48-09-301"
+            readOnly
+            className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white"
+          />
         </div>
       </div>
 
@@ -639,20 +643,19 @@ function PatientDataEntry() {
         </div>
       </div>
 
-             {/* Section Navigation */}
-       <div className="mb-6">
-         <div className="flex space-x-1 bg-gray-800 p-1 rounded-lg">
+      {/* Section Navigation */}
+      <div className="mb-6">
+        <div className="flex space-x-1 bg-gray-800 p-1 rounded-lg">
           {sections.map((section) => {
             const Icon = section.icon;
             return (
               <div
                 key={section.id}
                 onClick={() => setActiveSection(section.id)}
-                                 className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
-                   activeSection === section.id
-                     ? 'bg-white text-purple-900 shadow-sm'
-                     : 'text-white hover:text-gray-300'
-                 }`}
+                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${activeSection === section.id
+                    ? 'bg-white text-purple-900 shadow-sm'
+                    : 'text-white hover:text-gray-300'
+                  }`}
               >
                 <Icon className="h-4 w-4" />
                 {/* <span className={`hidden sm:inline ${activeSection === section.id ? 'hover:text-blue' : 'text-white'}`}  >{section.title}</span> */}
@@ -663,8 +666,8 @@ function PatientDataEntry() {
         </div>
       </div>
 
-             {/* Section Content */}
-       <div className="bg-gray-800 p-6 rounded-lg">
+      {/* Section Content */}
+      <div className="bg-gray-800 p-6 rounded-lg">
         {renderSection()}
       </div>
     </div>
@@ -672,90 +675,90 @@ function PatientDataEntry() {
 }
 
 // Document Preview Section
-function DocumentPreview() {
+function DocumentPreview({ setShowResults }) {
   return (
     <div className="flex-1 bg-black border-l border-gray-200">
-             {/* Viewer Controls */}
-       <div className="bg-gray-800 border-b border-gray-600 p-4">
+      {/* Viewer Controls */}
+      <div className="bg-gray-800 border-b border-gray-600 p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-                         <button className="p-2 hover:bg-gray-600 rounded">
-               <Search className="h-4 w-4" />
-             </button>
+            <button className="p-2 hover:bg-gray-600 rounded">
+              <Search className="h-4 w-4" />
+            </button>
             <span className="text-sm text-white">110%</span>
             <span className="text-sm text-white">1 / 12</span>
           </div>
-                     <div className="flex items-center space-x-2">
-             <button className="p-2 hover:bg-gray-600 rounded">
-               <Eye className="h-4 w-4" />
-             </button>
-             <button className="p-2 hover:bg-gray-600 rounded">
-               <Download className="h-4 w-4" />
-             </button>
-             <button className="p-2 hover:bg-gray-600 rounded">
-               <Printer className="h-4 w-4" />
-             </button>
-             <button className="p-2 hover:bg-gray-600 rounded">
-               <MoreVertical className="h-4 w-4" />
-             </button>
-           </div>
+          <div className="flex items-center space-x-2">
+            <button className="p-2 hover:bg-gray-600 rounded">
+              <Eye className="h-4 w-4" />
+            </button>
+            <button className="p-2 hover:bg-gray-600 rounded">
+              <Download className="h-4 w-4" />
+            </button>
+            <button className="p-2 hover:bg-gray-600 rounded">
+              <Printer className="h-4 w-4" />
+            </button>
+            <button className="p-2 hover:bg-gray-600 rounded">
+              <MoreVertical className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Document Content */}
       <div className="p-6">
-                 <div className="bg-gray-800 border border-gray-600 rounded-lg p-6">
+        <div className="bg-gray-800 border border-gray-600 rounded-lg p-6">
           <div className="text-center mb-6">
-                         <h1 className="text-2xl font-bold text-purple-300 mb-2">Pre-procedure Cardiac Report</h1>
+            <h1 className="text-2xl font-bold text-purple-300 mb-2">Pre-procedure Cardiac Report</h1>
             <p className="text-white">Patient: G M (Male, 89 years)</p>
           </div>
 
           <div className="grid grid-cols-2 gap-6 mb-6">
             <div>
               <h3 className="font-semibold text-white mb-2">Report Details</h3>
-                             <div className="space-y-1 text-sm text-white">
-                 <p><span className="font-medium">Creation Date:</span> 14-11-2024</p>
-                 <p><span className="font-medium">Created By:</span> MERIL TAVI CORELAB (AP)</p>
-                 <p><span className="font-medium">Received Date:</span> 14-11-2024</p>
-                 <p><span className="font-medium">Reviewed Date:</span> -</p>
-               </div>
+              <div className="space-y-1 text-sm text-white">
+                <p><span className="font-medium">Creation Date:</span> 14-11-2024</p>
+                <p><span className="font-medium">Created By:</span> MERIL TAVI CORELAB (AP)</p>
+                <p><span className="font-medium">Received Date:</span> 14-11-2024</p>
+                <p><span className="font-medium">Reviewed Date:</span> -</p>
+              </div>
             </div>
             <div>
               <h3 className="font-semibold text-white mb-2">Physician Information</h3>
-                             <div className="space-y-1 text-sm text-white">
-                 <p><span className="font-medium">Physician:</span> Dr. Didier Tchetche</p>
-                 <p><span className="font-medium">Hospital:</span> Clinique Pasteur</p>
-                 <p><span className="font-medium">City:</span> Toulouse</p>
-                 <p><span className="font-medium">Country:</span> France</p>
-               </div>
+              <div className="space-y-1 text-sm text-white">
+                <p><span className="font-medium">Physician:</span> Dr. Didier Tchetche</p>
+                <p><span className="font-medium">Hospital:</span> Clinique Pasteur</p>
+                <p><span className="font-medium">City:</span> Toulouse</p>
+                <p><span className="font-medium">Country:</span> France</p>
+              </div>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-6 mb-6">
             <div>
-                             <h3 className="font-semibold text-white mb-2">Patient Information</h3>
-               <div className="space-y-1 text-sm text-white">
-                 <p><span className="font-medium">Name:</span> G M</p>
-                 <p><span className="font-medium">Gender:</span> Male</p>
-                 <p><span className="font-medium">Year of Birth (Age):</span> 1935 (89)</p>
-                 <p><span className="font-medium">Height:</span> 1.76 m</p>
-                 <p><span className="font-medium">Weight:</span> 77 kg</p>
-                 <p><span className="font-medium">BMI:</span> 24.9</p>
-               </div>
+              <h3 className="font-semibold text-white mb-2">Patient Information</h3>
+              <div className="space-y-1 text-sm text-white">
+                <p><span className="font-medium">Name:</span> G M</p>
+                <p><span className="font-medium">Gender:</span> Male</p>
+                <p><span className="font-medium">Year of Birth (Age):</span> 1935 (89)</p>
+                <p><span className="font-medium">Height:</span> 1.76 m</p>
+                <p><span className="font-medium">Weight:</span> 77 kg</p>
+                <p><span className="font-medium">BMI:</span> 24.9</p>
+              </div>
             </div>
             <div>
-                             <h3 className="font-semibold text-white mb-2">Clinical Scores</h3>
-               <div className="space-y-1 text-sm text-white">
-                 <p><span className="font-medium">NYHA:</span> -</p>
-                 <p><span className="font-medium">EuroSCORE II:</span> -</p>
-                 <p><span className="font-medium">STS Score:</span> -</p>
-               </div>
+              <h3 className="font-semibold text-white mb-2">Clinical Scores</h3>
+              <div className="space-y-1 text-sm text-white">
+                <p><span className="font-medium">NYHA:</span> -</p>
+                <p><span className="font-medium">EuroSCORE II:</span> -</p>
+                <p><span className="font-medium">STS Score:</span> -</p>
+              </div>
             </div>
           </div>
 
           <div className="mb-6">
-                         <h3 className="font-semibold text-white mb-4">Aortic Valve Measurements</h3>
-             <div className="grid grid-cols-3 gap-4 text-sm text-white">
+            <h3 className="font-semibold text-white mb-4">Aortic Valve Measurements</h3>
+            <div className="grid grid-cols-3 gap-4 text-sm text-white">
               <div>
                 <p className="font-medium">Aortic Annulus</p>
                 <p>Perimeter: 78.4 mm</p>
@@ -782,9 +785,141 @@ function DocumentPreview() {
           </div>
 
           <div className="text-center">
-            <div className="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-lg">
-              <p className="text-sm font-medium">Analysis completed successfully</p>
-              <p className="text-xs">All measurements have been extracted and verified</p>
+            <button 
+              onClick={() => setShowResults(true)}
+              className="inline-block bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700 transition-colors"
+            >
+              <p className="text-sm font-medium">Generate Valve Report</p>
+              {/* <p className="text-xs">All measurements have been extracted and verified</p> */}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Result Page Component
+function ResultPage({ setShowResults }) {
+  return (
+    <div className="min-h-screen bg-black">
+      <Navigation />
+      <div className="pt-16 p-6">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <button
+              onClick={() => setShowResults(false)}
+              className="text-gray-300 hover:text-purple-400 transition-all duration-300 hover:scale-105 flex items-center gap-2 mb-4"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Analysis
+            </button>
+            <h1 className="text-3xl font-bold text-white mb-2">Valve Durability Prediction Results</h1>
+            <p className="text-gray-400">AI-powered analysis for patient G M (Male, 89 years)</p>
+          </div>
+
+          {/* Risk Summary Panel */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Clock className="h-6 w-6 text-purple-400" />
+                <h2 className="text-xl font-semibold text-white">Estimated Valve Lifetime</h2>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-green-400 mb-2">8.2 years</div>
+                <p className="text-gray-400 text-sm">Based on current valve condition and patient factors</p>
+              </div>
+            </div>
+
+            <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Target className="h-6 w-6 text-red-400" />
+                <h2 className="text-xl font-semibold text-white">5-Year Reintervention Risk</h2>
+              </div>
+              <div className="text-center">
+                <div className="text-4xl font-bold text-red-400 mb-2">23%</div>
+                <p className="text-gray-400 text-sm">Probability of requiring valve replacement</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Valve Health Curve */}
+          <div className="bg-gray-800 border border-gray-700 rounded-lg p-6 mb-8">
+            <div className="flex items-center gap-3 mb-6">
+              <TrendingUp className="h-6 w-6 text-blue-400" />
+              <h2 className="text-xl font-semibold text-white">Valve Health Trajectory</h2>
+            </div>
+            <div className="h-64 bg-gray-900 rounded-lg p-4 flex items-end justify-between">
+              {/* Simplified chart representation */}
+              <div className="flex items-end gap-2 h-full">
+                <div className="w-8 bg-green-500 rounded-t" style={{height: '80%'}}></div>
+                <div className="w-8 bg-green-400 rounded-t" style={{height: '75%'}}></div>
+                <div className="w-8 bg-yellow-500 rounded-t" style={{height: '65%'}}></div>
+                <div className="w-8 bg-yellow-400 rounded-t" style={{height: '55%'}}></div>
+                <div className="w-8 bg-orange-500 rounded-t" style={{height: '45%'}}></div>
+                <div className="w-8 bg-orange-400 rounded-t" style={{height: '35%'}}></div>
+                <div className="w-8 bg-red-500 rounded-t" style={{height: '25%'}}></div>
+                <div className="w-8 bg-red-400 rounded-t" style={{height: '15%'}}></div>
+              </div>
+            </div>
+            <div className="flex justify-between text-sm text-gray-400 mt-2">
+              <span>Year 1</span>
+              <span>Year 2</span>
+              <span>Year 3</span>
+              <span>Year 4</span>
+              <span>Year 5</span>
+              <span>Year 6</span>
+              <span>Year 7</span>
+              <span>Year 8</span>
+            </div>
+            <p className="text-gray-400 text-sm mt-4">
+              Projected valve degeneration trajectory showing gradual decline in valve function over time
+            </p>
+          </div>
+
+          {/* Feature Attribution */}
+          <div className="bg-gray-800 border border-gray-700 rounded-lg p-6">
+            <div className="flex items-center gap-3 mb-6">
+              <BarChart3 className="h-6 w-6 text-purple-400" />
+              <h2 className="text-xl font-semibold text-white">Feature Attribution Analysis</h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-gray-900 rounded-lg p-4">
+                <h3 className="text-lg font-medium text-white mb-3">Oversizing Percentage</h3>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-gray-400">Current Value:</span>
+                  <span className="text-white font-medium">15.2%</span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="bg-green-500 h-2 rounded-full" style={{width: '60%'}}></div>
+                </div>
+                <p className="text-green-400 text-sm mt-2">Optimal range (10-20%)</p>
+              </div>
+
+              <div className="bg-gray-900 rounded-lg p-4">
+                <h3 className="text-lg font-medium text-white mb-3">Renal Function</h3>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-gray-400">eGFR:</span>
+                  <span className="text-white font-medium">45 mL/min</span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="bg-yellow-500 h-2 rounded-full" style={{width: '40%'}}></div>
+                </div>
+                <p className="text-yellow-400 text-sm mt-2">Moderate impairment</p>
+              </div>
+
+              <div className="bg-gray-900 rounded-lg p-4">
+                <h3 className="text-lg font-medium text-white mb-3">Leaflet Stiffness</h3>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-gray-400">Stiffness Index:</span>
+                  <span className="text-white font-medium">2.8</span>
+                </div>
+                <div className="w-full bg-gray-700 rounded-full h-2">
+                  <div className="bg-red-500 h-2 rounded-full" style={{width: '75%'}}></div>
+                </div>
+                <p className="text-red-400 text-sm mt-2">Above normal range</p>
+              </div>
             </div>
           </div>
         </div>
@@ -794,12 +929,18 @@ function DocumentPreview() {
 }
 
 function PatientAnalysis() {
+  const [showResults, setShowResults] = useState(false);
+
+  if (showResults) {
+    return <ResultPage setShowResults={setShowResults} />;
+  }
+
   return (
     <div className="min-h-screen bg-black">
       <Navigation />
       <div className="flex h-screen pt-16">
-        <PatientDataEntry />
-        <DocumentPreview />
+        <PatientDataEntry setShowResults={setShowResults} />
+        <DocumentPreview setShowResults={setShowResults} />
       </div>
     </div>
   );
