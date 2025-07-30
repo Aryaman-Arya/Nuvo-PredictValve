@@ -108,7 +108,7 @@ function PatientDataEntry() {
     { id: 'profile', title: 'Patient Profile (Baseline Visit)', icon: User   },
     { id: 'procedure', title: 'Index Procedure', icon: Activity },
     { id: 'ecg', title: 'ECG Evaluation (Core Laboratory)', icon: Monitor },
-    { id: 'ct3', title: 'CT3 Imaging (Mensio Analysis)', icon: Camera },
+    { id: 'ct3', title: 'CT3 Imaging', icon: Camera },
     { id: 'events', title: 'Post-Procedure Events', icon: AlertTriangle }
   ];
 
@@ -645,18 +645,19 @@ function PatientDataEntry() {
           {sections.map((section) => {
             const Icon = section.icon;
             return (
-              <button
+              <div
                 key={section.id}
                 onClick={() => setActiveSection(section.id)}
-                                 className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                                 className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
                    activeSection === section.id
                      ? 'bg-white text-purple-900 shadow-sm'
                      : 'text-white hover:text-gray-300'
                  }`}
               >
                 <Icon className="h-4 w-4" />
-                <span className="hidden sm:inline">{section.title}</span>
-              </button>
+                {/* <span className={`hidden sm:inline ${activeSection === section.id ? 'hover:text-blue' : 'text-white'}`}  >{section.title}</span> */}
+                {section.title}
+              </div>
             );
           })}
         </div>
@@ -705,7 +706,7 @@ function DocumentPreview() {
       <div className="p-6">
                  <div className="bg-gray-800 border border-gray-600 rounded-lg p-6">
           <div className="text-center mb-6">
-                         <h1 className="text-2xl font-bold text-white mb-2">Pre-procedure Cardiac Report</h1>
+                         <h1 className="text-2xl font-bold text-purple-300 mb-2">Pre-procedure Cardiac Report</h1>
             <p className="text-white">Patient: G M (Male, 89 years)</p>
           </div>
 
